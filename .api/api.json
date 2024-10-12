@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "tradelocker",
+      "source": "@tradelocker/v1.5.3#rna2jl2xm235x6lt",
+      "integrity": "sha512-4zmnElc2bz9mKRAqcvqgt2HnxPqBzNEe7lxjnC2pEoGSOX102ghE/HImo/tPJeIpYYil7cDcy14hsgjSPybD1w==",
+      "installerVersion": "6.1.2"
+    }
+  ]
+}
