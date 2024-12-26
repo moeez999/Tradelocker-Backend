@@ -1,6 +1,7 @@
 // controllers/user.controller.js
 const dotenv = require("dotenv");
 const tradelocker = require("@api/tradelocker"); // Assuming this is compatible with CommonJS
+const { default: axios } = require("axios");
 
 dotenv.config(); // Load environment variables
 
@@ -134,6 +135,38 @@ const getUserDetails = async (req, res) => {
     });
   }
 };
+
+
+// Fonction pour obtenir un nouveau JWT depuis TradeLocker
+const getJwtToken = async (req, res) => {
+  const { email, password, server } = req.body;
+  if (!email || !password || !server) {
+      return res.status(400).json({ error: 'All fields are required: email, password, server.' });
+  }
+
+  try {
+      const response = await axios.post(`https://demo.tradelocker.com/backend-api/auth/jwt/token`, {
+          email,
+          password,
+          server,
+      });
+
+      const { accessToken, refreshToken } = response.data;
+
+      res.status(201).json({
+          message: 'Authentification success',
+          accessToken,
+          refreshToken,
+      });
+  } catch (error) {
+      res.status(500).json({ error: error.response?.data || error.message });
+  }
+};
+
+
+
+// Protected route
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -141,4 +174,5 @@ module.exports = {
   setUserEmail,
   getUserByEmail,
   getUserDetails,
+  getJwtToken,
 };
