@@ -56,8 +56,8 @@ const getAllUsers = async (req, res) => {
 };
 
 const setUserPassword = async (req, res) => {
-  const userId = req.params.id;
-  const { password } = req.body;
+  //const userId = req.params.id;
+  const { password, userId} = req.body;
 
   try {
     const response = await tradelocker.usersController_setPassword({
@@ -140,7 +140,8 @@ const getUserDetails = async (req, res) => {
 // Fonction pour obtenir un nouveau JWT depuis TradeLocker
 const getJwtToken = async (req, res) => {
   const { email, password, server } = req.body;
-  if (!email || !password || !server) {
+  console.log("Received request body:", req.body);
+  if (!email || !password ) {
       return res.status(400).json({ error: 'All fields are required: email, password, server.' });
   }
 
@@ -148,7 +149,7 @@ const getJwtToken = async (req, res) => {
       const response = await axios.post(`https://demo.tradelocker.com/backend-api/auth/jwt/token`, {
           email,
           password,
-          server,
+          server:"OSP-DEMO",
       });
 
       const { accessToken, refreshToken } = response.data;
@@ -157,6 +158,7 @@ const getJwtToken = async (req, res) => {
           message: 'Authentification success',
           accessToken,
           refreshToken,
+          data: response.data,
       });
   } catch (error) {
       res.status(500).json({ error: error.response?.data || error.message });
