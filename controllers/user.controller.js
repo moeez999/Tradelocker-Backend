@@ -40,7 +40,8 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const response = await tradelocker.usersController_getAllUsers({
+    //const response = await tradelocker.usersController_getAllUsers({
+      const response = await tradelocker.usersController_getUsersByBrandId({
       offset: req.query.offset || 0,
       limit: req.query.limit || 10,
     });
@@ -49,7 +50,7 @@ const getAllUsers = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving users:", error.message);
     res.status(500).json({
-      message: error.data.message,
+      message: error.data,
       error: error.status,
     });
   }
@@ -148,8 +149,7 @@ const getJwtToken = async (req, res) => {
   try {
       const response = await axios.post(`https://demo.tradelocker.com/backend-api/auth/jwt/token`, {
           email,
-          password,
-          server:"OSP-DEMO",
+          password
       });
 
       const { accessToken, refreshToken } = response.data;
