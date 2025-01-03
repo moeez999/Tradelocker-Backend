@@ -149,7 +149,8 @@ const getJwtToken = async (req, res) => {
   try {
       const response = await axios.post(`https://demo.tradelocker.com/backend-api/auth/jwt/token`, {
           email,
-          password
+          password,
+          server:"OSP-DEMO"
       });
 
       const { accessToken, refreshToken } = response.data;

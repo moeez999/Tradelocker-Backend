@@ -10,12 +10,14 @@ const {
   cancelAllOrders,
   closeAllPositions,
   changeUserGroup,
+  getAllAccountsJwt,
 } = require("../controllers/accounts.controller");
 
 const router = express.Router();
 
 // Define the route for fetching account data
 router.post("/get-accounts", getAccounts);
+router.post("/get-all-accounts", getAllAccountsJwt);
 router.post("/get-account-details", getAccountDetails);
 router.post("/get-all-accounts-for-brand", getAllAccountsForBrand);
 router.post("/create-account", createAccount);

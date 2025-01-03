@@ -1,8 +1,10 @@
 const dotenv = require("dotenv");
 const tradelocker = require("@api/tradelocker");
+const { default: axios } = require("axios");
+const TRADELOCKER_API_BASE_URL="https://demo.tradelocker.com/backend-api";
 
 const getAccounts = async (req, res) => {
-  const userId = req.params.id; // Extract userId from request parameters
+  const {userId} = req.body; // Extract userId from request parameters
 
   try {
     // Authenticate the tradelocker API
@@ -12,7 +14,7 @@ const getAccounts = async (req, res) => {
     const response = await tradelocker.accountController_getAccounts({
       userId,
     });
-
+    
     // Send the response data back to the client
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -23,6 +25,35 @@ const getAccounts = async (req, res) => {
     });
   }
 };
+
+// Function to get all user accounts
+const getAllAccountsJwt = async (req, res) => {
+  const { accessToken } = req.body;
+
+  // Validate the presence of the accessToken
+  if (!accessToken) {
+    return res.status(400).json({ error: "Access token is required." });
+  }
+
+  try {
+    const response = await axios.get(`${TRADELOCKER_API_BASE_URL}/auth/jwt/all-accounts`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Return the fetched accounts
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error(
+      "Error fetching all accounts:",
+      error
+    );
+    res.status(400).json({ error: "Error fetching all accounts."});
+  }
+};
+
+
 
 // Function to fetch account details
 const getAccountDetails = async (req, res) => {
@@ -325,4 +356,5 @@ module.exports = {
   cancelAllOrders,
   closeAllPositions,
   changeUserGroup,
+  getAllAccountsJwt
 };
