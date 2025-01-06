@@ -69,8 +69,7 @@ const setUserPassword = async (req, res) => {
   } catch (error) {
     console.error("Error setting password:", error.message);
     res.status(500).json({
-      message: error.data.message,
-      error: error.status,
+      message: error
     });
   }
 };

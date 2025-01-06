@@ -345,6 +345,31 @@ const changeUserGroup = async (req, res) => {
   }
 };
 
+const getAllPositionJwt = async (req, res) => {
+  const { accountId } = req.params;
+  let accNum = req.body.headers['acc-num'] || req.query.accNum;
+  let accessToken = req.body.headers['access-token'];
+  console.log(req.body);
+  
+  try {
+    const response = await axios.get(`${TRADELOCKER_API_BASE_URL}/trade/accounts/${accountId}/positions`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'accNum': accNum,
+      },
+    });
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Error fetching positions:', error.response ? error.response.data : error.message);
+
+    const status = error.response ? error.response.status : 500;
+    const message = error.response && error.response.data ? error.response.data : 'Error fetching positions';
+
+    res.status(status).send(message);
+  }
+};
+
 module.exports = {
   getAccounts,
   getAccountDetails,
@@ -356,5 +381,6 @@ module.exports = {
   cancelAllOrders,
   closeAllPositions,
   changeUserGroup,
-  getAllAccountsJwt
+  getAllAccountsJwt,
+  getAllPositionJwt
 };

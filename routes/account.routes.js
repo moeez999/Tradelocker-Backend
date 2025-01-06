@@ -11,6 +11,7 @@ const {
   closeAllPositions,
   changeUserGroup,
   getAllAccountsJwt,
+  getAllPositionJwt,
 } = require("../controllers/accounts.controller");
 
 const router = express.Router();
@@ -24,6 +25,7 @@ router.post("/create-account", createAccount);
 router.put("/activate-account", activateAccount);
 router.put("/restrict-account", restrictAccount);
 router.put("/suspend-account", suspendAccount);
+router.post("/get-all-positions/:accountId", getAllPositionJwt);
 router.put("/change-user-group", changeUserGroup);
 router.post("/cancel-all-orders", cancelAllOrders);
 router.post("/close-all-positions", closeAllPositions);
